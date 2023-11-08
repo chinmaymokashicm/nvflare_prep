@@ -48,7 +48,7 @@ class Trainer:
         
         # Set hyperparameters
         is_cuda_available = torch.cuda.is_available()
-        logging.info(f"Is CUDA available? {is_cuda_available}")
+        logging.info(f"Is CUDA available? {'Yes' if is_cuda_available else 'No'}")
         # if is_cuda_available:
         #     self.device = torch.device("cuda:2")
         # else:
@@ -100,10 +100,10 @@ class Trainer:
                     outputs = self.model(inputs)
                     print("Received output")
                     loss = self.criterion(outputs, labels)
-                    # print("Calculated loss")
+                    print("Calculated loss")
                     # print(loss)
                     # print(type(loss))
-                    # print(loss.size())
+                    print(loss.size())
                     gc.collect()
                     loss.backward()
                     print("Performed backpropagation")
