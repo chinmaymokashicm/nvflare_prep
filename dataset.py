@@ -6,7 +6,7 @@ from torchvision import transforms
 from torch.utils.data import Dataset
 
 class PTDataset(Dataset):
-    def __init__(self, data_dir, filename_prefix="lung", train_or_test="train", transform=None, crop_size=(572, 572, 128)):
+    def __init__(self, data_dir, filename_prefix="lung", train_or_test="train", transform=None, crop_size=(256, 256, 64)):
         self.data_dir = data_dir
         self.transform = transform
         self.train_or_test = train_or_test
@@ -107,7 +107,7 @@ class PTDataset(Dataset):
 
         if self.train_or_test == "train":
             label = self.load_nifti(self.filepath_labels[idx])
-            label = self.pad_or_crop_volume(label, crop_size=(574, 574, 130))
+            label = self.pad_or_crop_volume(label, crop_size=(258, 258, 66))
             # label = torch.Tensor(label).unsqueeze(0)
             label = torch.Tensor(label)
             label = label.float()
