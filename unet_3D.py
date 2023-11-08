@@ -116,19 +116,18 @@ class UNet3D(nn.Module):
         return x
 
 if __name__ == '__main__':
-    os.environ["CUDA_VISIBLE_DEVICES"] = "0,1,2"
-    model = UNet3D(in_channels=1, num_classes=1)
+    os.environ["CUDA_VISIBLE_DEVICES"] = "0"
+    # device = torch.device("cuda")
+    model = UNet3D(in_channels=1, num_classes=2)
+    # model.to(device)
     start_time = time.time()
     # summary(model=model, input_size=(3, 16, 128, 128), batch_size=-1, device="cpu")
     # print("--- %s seconds ---" % (time.time() - start_time))
     
-    x = torch.rand((1, 1, 572, 572, 128))
+    # x = torch.rand((1, 1, 572, 572, 128))
+    x = torch.rand((1, 1, 256, 256, 64))
+    # x.to(device)
     y = model.forward(x)
     print(y)
     print("--- %s seconds ---" % (time.time() - start_time))
     print(y.size())
-    
-    """
-    CPU - 187.04266715049744 seconds
-    GPU (0,1,2) - 260.1612582206726
-    """
