@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 
+# Load environment variables
+set -a
+source .env
+set +a
+
 # Create virtual environment
 conda_env="nvflare"
 create_conda_env="conda create -n \$conda_env python=3.9.0 --y"
@@ -22,7 +27,6 @@ fi
 
 source $venv/bin/activate
 
-
 # Install packages
 pip install --upgrade pip
 # pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
@@ -32,18 +36,35 @@ pip install nvflare nibabel torch-summary matplotlib ipykernel
 
 pip freeze > requirements.txt
 
-# Download datasets
-wget https://msd-for-monai.s3-us-west-2.amazonaws.com/Task01_BrainTumour.tar
-wget https://msd-for-monai.s3-us-west-2.amazonaws.com/Task02_Heart.tar
-wget https://msd-for-monai.s3-us-west-2.amazonaws.com/Task06_Lung.tar
+if [ "$TASK_NUM" == "1" ]
+then
+  echo "Choosing Task $TASK_NUM"
+  wget https://msd-for-monai.s3-us-west-2.amazonaws.com/Task01_BrainTumour.tar
+  tar -xvf Task01_BrainTumour.tar
+  mkdir -p models/task01
+elif [ "$TASK_NUM" == "2" ]
+then
+  echo "Choosing Task $TASK_NUM"
+  wget https://msd-for-monai.s3-us-west-2.amazonaws.com/Task02_Heart.tar
+  tar -xvf Task02_Heart.tar
+  mkdir -p models/task02
+elif [ "$TASK_NUM" == "6" ]
+  echo "Choosing Task $TASK_NUM"
+  wget https://msd-for-monai.s3-us-west-2.amazonaws.com/Task06_Lung.tar
+  tar -xvf Task06_Lung.tar
+  mkdir -p models/task06
+else
+  echo "Task number $TASK_NUM not found!"
 
-# Untar dataset
-tar -xvf Task01_BrainTumour.tar
-tar -xvf Task02_Heart.tar
-tar -xvf Task06_Lung.tar
+# # Download datasets
+# wget https://msd-for-monai.s3-us-west-2.amazonaws.com/Task01_BrainTumour.tar
+# wget https://msd-for-monai.s3-us-west-2.amazonaws.com/Task02_Heart.tar
+# wget https://msd-for-monai.s3-us-west-2.amazonaws.com/Task06_Lung.tar
 
-# Create directories for each model training
-mkdir models
-mkdir models/task01
-mkdir models/task02
-mkdir models/task06
+# # Untar dataset
+# tar -xvf Task01_BrainTumour.tar
+# tar -xvf Task02_Heart.tar
+# tar -xvf Task06_Lung.tar
+
+# # Create directories for each model training
+# mkdir models
